@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaSaver - Economize Água em Casa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .water-drop {
+            animation: drop 2s ease-in-out infinite;
+        }
+        
+        @keyframes drop {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        .dark {
+            --tw-bg-opacity: 1;
+            background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+            color: white;
+        }
+        
+        .dark .bg-white {
+            background-color: rgb(31 41 55);
+        }
+        
+        .dark .text-gray-800 {
+            color: rgb(229 231 235);
+        }
+        
+        .dark .text-gray-600 {
+            color: rgb(156 163 175);
+        }
+        
+        .dark .text-gray-700 {
+            color: rgb(209 213 219);
+        }
+        
+        .dark .border-gray-300 {
+            border-color: rgb(75 85 99);
+        }
+        
+        .dark .bg-gray-50 {
+            background-color: rgb(55 65 81);
+        }
+        
+        .dark .bg-gray-100 {
+            background-color: rgb(75 85 99);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-cyan-100 min-h-screen transition-colors duration-300">
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="water-drop text-6xl mb-4">💧</div>
+                <h1 class="text-3xl font-bold text-blue-800 mb-2">AquaSaver</h1>
+                <p class="text-gray-600">Economize água, preserve o futuro</p>
+            </div>
+            
+            <div class="space-y-4">
+                <button onclick="loginWithGoogle()" class="w-full bg-red-500 text-white py-3 rounded-lg font-medium hover:bg-red-600 transition-colors flex items-center justify-center space-x-2">
+                    <span>🔍</span>
+                    <span>Entrar com Google</span>
+                </button>
+                
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">ou</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <input type="email" id="email" placeholder="Email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <input type="password" id="password" placeholder="Senha" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <button onclick="login()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Entrar
+                </button>
+                
+                <button onclick="showRegister()" class="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                    Criar Nova Conta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Screen -->
+    <div id="register-screen" class="min-h-screen flex items-center justify-center px-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="water-drop text-6xl mb-4">💧</div>
+                <h1 class="text-3xl font-bold text-blue-800 mb-2">Criar Conta</h1>
+                <p class="text-gray-600">Junte-se à comunidade AquaSaver</p>
+            </div>
+            
+            <div class="space-y-4">
+                <input type="text" id="fullName" placeholder="Nome completo" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <input type="email" id="regEmail" placeholder="Email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <select id="userState" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="">Selecione seu estado</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="PR">Paraná</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="BA">Bahia</option>
+                    <option value="GO">Goiás</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="CE">Ceará</option>
+                </select>
+                <input type="password" id="regPassword" placeholder="Senha" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <input type="password" id="confirmPassword" placeholder="Confirmar senha" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                
+                <button onclick="register()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Criar Conta
+                </button>
+                
+                <button onclick="showLogin()" class="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                    Já tenho conta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-lg sticky top-0 z-50">
+            <div class="px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="water-drop text-3xl">💧</div>
+                        <div>
+                            <h1 class="text-xl font-bold text-blue-800">AquaSaver</h1>
+                            <p class="text-xs text-blue-600" id="welcomeText">Bem-vindo!</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="showTab('settings')" class="text-gray-600 hover:text-blue-600">
+                            ⚙️
+                        </button>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-600">Economia</p>
+                            <p class="text-lg font-bold text-green-600" id="monthSavings">0L</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="px-4 pb-20">
+            <!-- Calculator Tab -->
+            <div id="calculator-tab" class="tab-content pt-4">
+                <div class="bg-white rounded-xl shadow-lg p-5 mb-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                        <span class="mr-2">🧮</span> Calculadora de Consumo
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tempo no banho (minutos)</label>
+                            <input type="number" id="showerTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" value="10" min="1" max="60">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Banhos por dia</label>
+                            <input type="number" id="showersPerDay" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" value="1" min="1" max="5">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Pessoas na casa</label>
+                            <input type="number" id="people" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" value="3" min="1" max="10">
+                        </div>
+                        
+                        <button onclick="calculateWaterUsage()" class="w-full bg-blue-600 text-white py-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-lg">
+                            Calcular Consumo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Resultado</h3>
+                    <div id="calculationResult" class="space-y-4">
+                        <p class="text-gray-600 text-center">Preencha os dados acima para ver os resultados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Tab -->
+            <div id="tips-tab" class="tab-content hidden pt-4 space-y-4">
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-3xl">🚿</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Banho Eficiente</h3>
+                            <p class="text-gray-600 mb-3 text-sm">Reduza para 5-8 minutos e feche ao se ensaboar.</p>
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <p class="text-sm text-green-800"><strong>Economia:</strong> Até 80L por banho</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-3xl">🦷</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Escovação Inteligente</h3>
+                            <p class="text-gray-600 mb-3 text-sm">Feche a torneira e use um copo com água.</p>
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <p class="text-sm text-green-800"><strong>Economia:</strong> Até 25L por escovação</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-3xl">🍽️</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Louça Econômica</h3>
+                            <p class="text-gray-600 mb-3 text-sm">Acumule e lave tudo de uma vez.</p>
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <p class="text-sm text-green-800"><strong>Economia:</strong> Até 100L por lavagem</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Tab -->
+            <div id="financial-tab" class="tab-content hidden pt-4 space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                        <span class="mr-2">💰</span> Registrar Gasto
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Valor da conta (R$)</label>
+                            <input type="number" id="billAmount" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" placeholder="Ex: 120.50" step="0.01">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mês/Ano</label>
+                            <input type="month" id="billMonth" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg">
+                        </div>
+                        
+                        <button onclick="addBill()" class="w-full bg-green-600 text-white py-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-lg">
+                            Registrar Conta
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5">Comparação Mensal</h3>
+                    <div id="financialComparison">
+                        <p class="text-gray-600 text-center text-sm">Registre pelo menos 2 contas para ver a comparação.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5">Histórico de Contas</h3>
+                    <div id="billHistory" class="space-y-3">
+                        <p class="text-gray-600 text-center text-sm">Nenhuma conta registrada ainda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Tab -->
+            <div id="news-tab" class="tab-content hidden pt-4 space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="mr-2">📍</span> Sua Região: <span id="userRegion" class="text-blue-600">São Paulo</span>
+                    </h3>
+                    <button onclick="changeRegion()" class="text-sm text-blue-600 hover:text-blue-800">Alterar região</button>
+                </div>
+                
+                <div id="newsContainer" class="space-y-4">
+                    <!-- News will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Goals Tab -->
+            <div id="goals-tab" class="tab-content hidden pt-4 space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                        <span class="mr-2">🎯</span> Nova Meta
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de meta</label>
+                            <select id="goalType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-base">
+                                <option value="water">Economia de água (litros)</option>
+                                <option value="money">Economia financeira (R$)</option>
+                                <option value="days">Dias consecutivos economizando</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Valor da meta</label>
+                            <input type="number" id="goalValue" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" placeholder="Ex: 1000">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Prazo (dias)</label>
+                            <input type="number" id="goalDays" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" placeholder="Ex: 30" value="30">
+                        </div>
+                        
+                        <button onclick="addGoal()" class="w-full bg-purple-600 text-white py-4 rounded-lg font-medium hover:bg-purple-700 transition-colors text-lg">
+                            Criar Meta
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5">Metas Ativas</h3>
+                    <div id="activeGoals" class="space-y-3">
+                        <p class="text-gray-600 text-center text-sm">Nenhuma meta ativa.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5">Metas Concluídas</h3>
+                    <div id="completedGoals" class="space-y-3">
+                        <p class="text-gray-600 text-center text-sm">Nenhuma meta concluída ainda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tracker Tab -->
+            <div id="tracker-tab" class="tab-content hidden pt-4 space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                        <span class="mr-2">📈</span> Registrar Economia
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ação realizada</label>
+                            <select id="actionType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-base">
+                                <option value="shower">Banho mais curto</option>
+                                <option value="teeth">Torneira fechada ao escovar dentes</option>
+                                <option value="dishes">Lavagem eficiente de louça</option>
+                                <option value="laundry">Máquina com carga completa</option>
+                                <option value="garden">Rega eficiente</option>
+                                <option value="leak">Conserto de vazamento</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Litros economizados</label>
+                            <input type="number" id="litersSaved" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg" placeholder="Ex: 50" min="1">
+                        </div>
+                        
+                        <button onclick="addSaving()" class="w-full bg-green-600 text-white py-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-lg">
+                            Registrar Economia
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5">Progresso Mensal</h3>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-gray-700">Meta: 1000L</span>
+                            <span class="text-sm font-medium text-gray-700" id="progressText">0L (0%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="progress-bar bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full" id="progressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3" id="savingsHistory">
+                        <p class="text-gray-600 text-center text-sm">Nenhuma economia registrada ainda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content hidden pt-4 space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                        <span class="mr-2">⚙️</span> Configurações
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-gray-800">Modo Escuro</p>
+                                <p class="text-sm text-gray-600">Ativar tema escuro</p>
+                            </div>
+                            <button onclick="toggleDarkMode()" id="darkModeToggle" class="bg-gray-300 rounded-full w-12 h-6 flex items-center transition-colors duration-300">
+                                <div class="bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300" id="darkModeSlider"></div>
+                            </button>
+                        </div>
+                        
+                        <div class="border-t pt-4">
+                            <p class="font-medium text-gray-800 mb-2">Perfil</p>
+                            <p class="text-sm text-gray-600" id="userProfile">Usuário logado</p>
+                        </div>
+                        
+                        <button onclick="logout()" class="w-full bg-red-600 text-white py-3 rounded-lg font-medium hover:bg-red-700 transition-colors">
+                            Sair da Conta
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 z-50">
+            <div class="grid grid-cols-6 gap-1">
+                <button onclick="showTab('calculator')" id="bottom-calculator" class="flex flex-col items-center py-2 px-1 text-blue-600">
+                    <span class="text-lg mb-1">🧮</span>
+                    <span class="text-xs font-medium">Calc</span>
+                </button>
+                <button onclick="showTab('tips')" id="bottom-tips" class="flex flex-col items-center py-2 px-1 text-gray-500">
+                    <span class="text-lg mb-1">💡</span>
+                    <span class="text-xs font-medium">Dicas</span>
+                </button>
+                <button onclick="showTab('financial')" id="bottom-financial" class="flex flex-col items-center py-2 px-1 text-gray-500">
+                    <span class="text-lg mb-1">💰</span>
+                    <span class="text-xs font-medium">Gasto</span>
+                </button>
+                <button onclick="showTab('news')" id="bottom-news" class="flex flex-col items-center py-2 px-1 text-gray-500">
+                    <span class="text-lg mb-1">📰</span>
+                    <span class="text-xs font-medium">News</span>
+                </button>
+                <button onclick="showTab('goals')" id="bottom-goals" class="flex flex-col items-center py-2 px-1 text-gray-500">
+                    <span class="text-lg mb-1">🎯</span>
+                    <span class="text-xs font-medium">Metas</span>
+                </button>
+                <button onclick="showTab('tracker')" id="bottom-tracker" class="flex flex-col items-center py-2 px-1 text-gray-500">
+                    <span class="text-lg mb-1">📊</span>
+                    <span class="text-xs font-medium">Track</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let totalSavings = 0;
+        let savingsHistory = [];
+        let billHistory = [];
+        let goals = [];
+        let isDarkMode = false;
+        
+        const stateNews = {
+            'SP': [
+                { title: 'São Paulo investe R$ 2 bi em saneamento', content: 'Governo estadual anuncia novo programa de universalização do saneamento básico.' },
+                { title: 'Campanha de economia de água em SP', content: 'Sabesp lança campanha para reduzir consumo em 20% até 2025.' },
+                { title: 'Tecnologia sustentável em SP', content: 'Empresas paulistas desenvolvem soluções inovadoras para reuso de água.' }
+            ],
+            'RJ': [
+                { title: 'Rio de Janeiro moderniza sistema hídrico', content: 'Cedae investe em tecnologia para reduzir perdas na distribuição.' },
+                { title: 'Praias cariocas ganham pontos de coleta', content: 'Novo programa de sustentabilidade nas praias do Rio.' }
+            ],
+            'MG': [
+                { title: 'Minas Gerais lidera em sustentabilidade', content: 'Estado se destaca em programas de conservação de água.' },
+                { title: 'Tecnologia mineira para tratamento', content: 'Universidades desenvolvem soluções inovadoras.' }
+            ]
+        };
+        
+        function showLogin() {
+            document.getElementById('register-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+        
+        function showRegister() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('register-screen').classList.remove('hidden');
+        }
+        
+        function loginWithGoogle() {
+            // Simulate Google login
+            currentUser = {
+                name: 'Usuário Google',
+                email: 'usuario@gmail.com',
+                state: 'SP'
+            };
+            showMainApp();
+        }
+        
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            currentUser = {
+                name: 'Usuário',
+                email: email,
+                state: 'SP'
+            };
+            showMainApp();
+        }
+        
+        function register() {
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('regEmail').value;
+            const state = document.getElementById('userState').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!name || !email || !state || !password || !confirmPassword) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem.');
+                return;
+            }
+            
+            currentUser = {
+                name: name,
+                email: email,
+                state: state
+            };
+            showMainApp();
+        }
+        
+        function showMainApp() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('register-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            
+            document.getElementById('welcomeText').textContent = `Olá, ${currentUser.name}!`;
+            document.getElementById('userProfile').textContent = `${currentUser.name} (${currentUser.email})`;
+            document.getElementById('userRegion').textContent = getStateName(currentUser.state);
+            
+            loadNews();
+            calculateWaterUsage();
+        }
+        
+        function logout() {
+            currentUser = null;
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            
+            // Reset form fields
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all bottom buttons
+            document.querySelectorAll('[id^="bottom-"]').forEach(btn => {
+                btn.classList.remove('text-blue-600');
+                btn.classList.add('text-gray-500');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            document.getElementById(tabName + '-tab').classList.add('fade-in');
+            
+            // Add active class to selected bottom button
+            const activeBottomBtn = document.getElementById('bottom-' + tabName);
+            if (activeBottomBtn) {
+                activeBottomBtn.classList.add('text-blue-600');
+                activeBottomBtn.classList.remove('text-gray-500');
+            }
+        }
+        
+        function calculateWaterUsage() {
+            const showerTime = parseInt(document.getElementById('showerTime').value);
+            const showersPerDay = parseInt(document.getElementById('showersPerDay').value);
+            const people = parseInt(document.getElementById('people').value);
+            
+            const dailyUsage = showerTime * showersPerDay * people * 10;
+            const monthlyUsage = dailyUsage * 30;
+            const potentialSavings = 3 * showersPerDay * people * 10 * 30;
+            
+            const resultHTML = `
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-800 mb-2">Consumo Atual</h4>
+                        <p class="text-sm text-blue-700">Por mês: <strong>${monthlyUsage}L</strong></p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-800 mb-2">Economia Potencial</h4>
+                        <p class="text-sm text-green-700"><strong>${potentialSavings}L por mês</strong></p>
+                        <p class="text-sm text-green-700">~R$ ${(potentialSavings * 0.01).toFixed(2)} na conta</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('calculationResult').innerHTML = resultHTML;
+        }
+        
+        function addSaving() {
+            const actionType = document.getElementById('actionType').value;
+            const litersSaved = parseInt(document.getElementById('litersSaved').value);
+            
+            if (!litersSaved || litersSaved <= 0) {
+                alert('Por favor, insira uma quantidade válida.');
+                return;
+            }
+            
+            const actionNames = {
+                'shower': 'Banho mais curto',
+                'teeth': 'Torneira fechada',
+                'dishes': 'Lavagem de louça',
+                'laundry': 'Máquina completa',
+                'garden': 'Rega eficiente',
+                'leak': 'Conserto de vazamento'
+            };
+            
+            totalSavings += litersSaved;
+            savingsHistory.unshift({
+                action: actionNames[actionType],
+                liters: litersSaved,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+            
+            updateProgress();
+            updateSavingsHistory();
+            checkGoals();
+            
+            document.getElementById('litersSaved').value = '';
+            alert(`Parabéns! Você economizou ${litersSaved}L! 🎉`);
+        }
+        
+        function updateProgress() {
+            const goal = 1000;
+            const percentage = Math.min((totalSavings / goal) * 100, 100);
+            
+            document.getElementById('monthSavings').textContent = totalSavings + 'L';
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${totalSavings}L (${percentage.toFixed(1)}%)`;
+        }
+        
+        function updateSavingsHistory() {
+            const historyContainer = document.getElementById('savingsHistory');
+            
+            if (savingsHistory.length === 0) {
+                historyContainer.innerHTML = '<p class="text-gray-600 text-center text-sm">Nenhuma economia registrada ainda.</p>';
+                return;
+            }
+            
+            const historyHTML = savingsHistory.slice(0, 5).map(saving => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">${saving.action}</p>
+                        <p class="text-sm text-gray-600">${saving.date}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-green-600">${saving.liters}L</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            historyContainer.innerHTML = historyHTML;
+        }
+        
+        function addBill() {
+            const amount = parseFloat(document.getElementById('billAmount').value);
+            const month = document.getElementById('billMonth').value;
+            
+            if (!amount || !month) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            billHistory.push({
+                amount: amount,
+                month: month,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+            
+            updateBillHistory();
+            updateFinancialComparison();
+            
+            document.getElementById('billAmount').value = '';
+            document.getElementById('billMonth').value = '';
+            
+            alert('Conta registrada com sucesso!');
+        }
+        
+        function updateBillHistory() {
+            const historyContainer = document.getElementById('billHistory');
+            
+            if (billHistory.length === 0) {
+                historyContainer.innerHTML = '<p class="text-gray-600 text-center text-sm">Nenhuma conta registrada ainda.</p>';
+                return;
+            }
+            
+            const historyHTML = billHistory.slice(0, 5).map(bill => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">${bill.month}</p>
+                        <p class="text-sm text-gray-600">Registrado em ${bill.date}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-blue-600">R$ ${bill.amount.toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            historyContainer.innerHTML = historyHTML;
+        }
+        
+        function updateFinancialComparison() {
+            const comparisonContainer = document.getElementById('financialComparison');
+            
+            if (billHistory.length < 2) {
+                comparisonContainer.innerHTML = '<p class="text-gray-600 text-center text-sm">Registre pelo menos 2 contas para ver a comparação.</p>';
+                return;
+            }
+            
+            const sortedBills = billHistory.sort((a, b) => new Date(a.month) - new Date(b.month));
+            const latest = sortedBills[sortedBills.length - 1];
+            const previous = sortedBills[sortedBills.length - 2];
+            
+            const difference = latest.amount - previous.amount;
+            const percentage = ((difference / previous.amount) * 100).toFixed(1);
+            
+            const comparisonHTML = `
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Mês anterior:</span>
+                        <span class="font-bold">R$ ${previous.amount.toFixed(2)}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Mês atual:</span>
+                        <span class="font-bold">R$ ${latest.amount.toFixed(2)}</span>
+                    </div>
+                    <div class="border-t pt-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700">Diferença:</span>
+                            <span class="font-bold ${difference < 0 ? 'text-green-600' : 'text-red-600'}">
+                                ${difference < 0 ? '-' : '+'}R$ ${Math.abs(difference).toFixed(2)} (${percentage}%)
+                            </span>
+                        </div>
+                        ${difference < 0 ? 
+                            '<p class="text-sm text-green-600 mt-2">🎉 Parabéns! Você economizou na conta de água!</p>' : 
+                            '<p class="text-sm text-red-600 mt-2">⚠️ Sua conta aumentou. Que tal seguir nossas dicas?</p>'
+                        }
+                    </div>
+                </div>
+            `;
+            
+            comparisonContainer.innerHTML = comparisonHTML;
+        }
+        
+        function loadNews() {
+            const newsContainer = document.getElementById('newsContainer');
+            const userState = currentUser.state;
+            const news = stateNews[userState] || stateNews['SP'];
+            
+            const newsHTML = news.map(item => `
+                <div class="bg-white rounded-xl shadow-lg p-5">
+                    <h4 class="font-bold text-gray-800 mb-2">${item.title}</h4>
+                    <p class="text-gray-600 text-sm">${item.content}</p>
+                    <div class="mt-3 text-xs text-gray-500">
+                        📅 ${new Date().toLocaleDateString('pt-BR')}
+                    </div>
+                </div>
+            `).join('');
+            
+            newsContainer.innerHTML = newsHTML;
+        }
+        
+        function changeRegion() {
+            const newState = prompt('Digite a sigla do seu estado (SP, RJ, MG, etc.):');
+            if (newState && stateNews[newState.toUpperCase()]) {
+                currentUser.state = newState.toUpperCase();
+                document.getElementById('userRegion').textContent = getStateName(currentUser.state);
+                loadNews();
+            } else if (newState) {
+                alert('Estado não encontrado. Usando São Paulo como padrão.');
+            }
+        }
+        
+        function getStateName(state) {
+            const stateNames = {
+                'SP': 'São Paulo',
+                'RJ': 'Rio de Janeiro',
+                'MG': 'Minas Gerais',
+                'RS': 'Rio Grande do Sul',
+                'PR': 'Paraná',
+                'SC': 'Santa Catarina',
+                'BA': 'Bahia',
+                'GO': 'Goiás',
+                'PE': 'Pernambuco',
+                'CE': 'Ceará'
+            };
+            return stateNames[state] || state;
+        }
+        
+        function addGoal() {
+            const type = document.getElementById('goalType').value;
+            const value = parseInt(document.getElementById('goalValue').value);
+            const days = parseInt(document.getElementById('goalDays').value);
+            
+            if (!value || !days) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            const goal = {
+                id: Date.now(),
+                type: type,
+                value: value,
+                days: days,
+                progress: 0,
+                startDate: new Date(),
+                endDate: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
+                completed: false
+            };
+            
+            goals.push(goal);
+            updateGoals();
+            
+            document.getElementById('goalValue').value = '';
+            alert('Meta criada com sucesso!');
+        }
+        
+        function updateGoals() {
+            const activeContainer = document.getElementById('activeGoals');
+            const completedContainer = document.getElementById('completedGoals');
+            
+            const activeGoals = goals.filter(g => !g.completed);
+            const completedGoals = goals.filter(g => g.completed);
+            
+            if (activeGoals.length === 0) {
+                activeContainer.innerHTML = '<p class="text-gray-600 text-center text-sm">Nenhuma meta ativa.</p>';
+            } else {
+                const activeHTML = activeGoals.map(goal => {
+                    const typeNames = {
+                        'water': 'Economia de água',
+                        'money': 'Economia financeira',
+                        'days': 'Dias consecutivos'
+                    };
+                    const units = {
+                        'water': 'L',
+                        'money': 'R$',
+                        'days': 'dias'
+                    };
+                    
+                    const percentage = Math.min((goal.progress / goal.value) * 100, 100);
+                    const daysLeft = Math.max(0, Math.ceil((goal.endDate - new Date()) / (24 * 60 * 60 * 1000)));
+                    
+                    return `
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold text-purple-800">${typeNames[goal.type]}</h4>
+                                <span class="text-sm text-purple-600">${daysLeft} dias restantes</span>
+                            </div>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>${goal.progress}${units[goal.type]}</span>
+                                    <span>${goal.value}${units[goal.type]}</span>
+                                </div>
+                                <div class="w-full bg-purple-200 rounded-full h-2">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-purple-700">${percentage.toFixed(1)}% concluído</p>
+                        </div>
+                    `;
+                }).join('');
+                activeContainer.innerHTML = activeHTML;
+            }
+            
+            if (completedGoals.length === 0) {
+                completedContainer.innerHTML = '<p class="text-gray-600 text-center text-sm">Nenhuma meta concluída ainda.</p>';
+            } else {
+                const completedHTML = completedGoals.map(goal => {
+                    const typeNames = {
+                        'water': 'Economia de água',
+                        'money': 'Economia financeira',
+                        'days': 'Dias consecutivos'
+                    };
+                    const units = {
+                        'water': 'L',
+                        'money': 'R$',
+                        'days': 'dias'
+                    };
+                    
+                    return `
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-semibold text-green-800">${typeNames[goal.type]}</h4>
+                                    <p class="text-sm text-green-600">${goal.value}${units[goal.type]} - Concluída!</p>
+                                </div>
+                                <span class="text-2xl">🏆</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                completedContainer.innerHTML = completedHTML;
+            }
+        }
+        
+        function checkGoals() {
+            goals.forEach(goal => {
+                if (!goal.completed) {
+                    if (goal.type === 'water') {
+                        goal.progress = totalSavings;
+                    }
+                    
+                    if (goal.progress >= goal.value) {
+                        goal.completed = true;
+                        alert(`🎉 Parabéns! Você concluiu uma meta!`);
+                    }
+                }
+            });
+            updateGoals();
+        }
+        
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            const body = document.body;
+            const toggle = document.getElementById('darkModeToggle');
+            const slider = document.getElementById('darkModeSlider');
+            
+            if (isDarkMode) {
+                body.classList.add('dark');
+                toggle.classList.remove('bg-gray-300');
+                toggle.classList.add('bg-blue-600');
+                slider.style.transform = 'translateX(24px)';
+            } else {
+                body.classList.remove('dark');
+                toggle.classList.remove('bg-blue-600');
+                toggle.classList.add('bg-gray-300');
+                slider.style.transform = 'translateX(0px)';
+            }
+        }
+        
+        // Initialize current month for bill input
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const currentMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('billMonth').value = currentMonth;
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980c44c31710f61f',t:'MTc1ODE1MDUzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
